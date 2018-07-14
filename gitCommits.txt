@@ -29,4 +29,4 @@
 命令28 git tag <name>   //给当前分支打上标签
 命令29 git tag         //查看所有标签
 命令30 git show <tagname>   //查看标签信息
-命令31 git tag -d <tagname>   //删除标签信息
+命令33 git tag -d <tagname>   //删除标签信息
