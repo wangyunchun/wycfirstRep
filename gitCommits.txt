@@ -1,0 +1,32 @@
+﻿git常用命令
+命令1 git init
+命令2 git add <filename>
+命令3 git commit -m ""
+命令4 git log
+命令5 git status
+命令8 git reset commitID
+命令9 git reset --herd HEAD^
+命令10 git reflog   //历史命令
+命令11 git diff
+命令12 git diff HEAD -- <filename>
+命令13 git checkout -- <filename> 
+命令14 git remote -v //查看远程库的信息
+命令15 git clone  //从远程库克隆
+命令15 git push origin master  //将master分支推送到远程仓库
+命令16 git checkout -b dev origin/dev  //创建于远程库dev分支对应的本地分支
+命令17 git pull //将远程分支的改变抓取的本地
+命令17 git branch   //查看仓库的分支 
+命令18 git branch --set-upstream-to<branch-name> origin/<branch-name>   //将本地分支与远程分支关联
+命令19 git checkout -b <branch-name>    //创建分支
+命令20 git checkout -d <branch-name>    //删除分支
+命令21 git checkout <branch-name>    //切换分支
+命令22 git merge <branch-name>       //合并指定分支到当前分支
+命令23 git log --grap     //分支合并图
+命令24 git merge --no-ff -m "" <branch-name>    //用普通模式合并分支
+命令25 git stash     //保存工作现场
+命令26 git stash pop  //恢复工作现场
+命令27 git stash list   //查看以保存的工作现场
+命令28 git tag <name>   //给当前分支打上标签
+命令29 git tag         //查看所有标签
+命令30 git show <tagname>   //查看标签信息
+命令31 git tag -d <tagname>   //删除标签信息
