@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>第一个three.js文件_WebGL三维场景</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      /* 隐藏body窗口区域滚动条 */
+    }
+  </style>
+  <!--引入three.js三维引擎-->
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/build/three.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script>
+  <!-- <script src="./three.js"></script> -->
+  <!-- <script src="http://www.yanhuangxueyuan.com/threejs/build/three.js"></script> -->
+</head>
+
+<body>
+  <script>
+    /**
+     * 创建场景对象Scene
+     */
+    var scene = new THREE.Scene();
+    /**
+     * 创建网格模型
+     */
+     //document.createElement('canvas');
+  function addIndexItem(text1,x,y,z){
+  var geometry1 = new THREE.BoxGeometry(40, 100, 10);
+var material1 = new THREE.MeshLambertMaterial({
+  color: 0x0000ff,
+  transparent: true
+}); //材质对象Material
+var mesh1 = new THREE.Mesh(geometry1, material1); //网格模型对象Mesh
+mesh1.translateX(x);
+mesh1.translateY(y);
+mesh1.translateZ(z);
+scene.add(mesh1); //网格模型添加到场景中
+
+let canvas = document.createElement('canvas');
+  let ctx = canvas.getContext('2d');
+  canvas.width = 40;
+  canvas.height = 100;
+  //制作矩形
+  ctx.fillStyle = "rgba(255,165,0,0.8)";
+  ctx.fillRect(0, 0, 40, 100);
+  //设置文字
+  ctx.fillStyle = "#fff";
+  ctx.font = 'normal 14pt "楷体"';
+  //ctx.fillText('', 100, 20);
+  let textWord = text1;
+  //文字换行
+  let len = parseInt(textWord.length / 1);
+  for (let i = 0; i < (len + 1); i++) {
+    let space = 1;
+    if (i === len) {
+      space = textWord.length - len * 1;
+    }
+    console.log('len+' + len, 'space+' + space);
+    let word = textWord.substr(i * 1, space);
+    ctx.fillText(word, 10, 20*(i+1));
+  }
+  //生成图片
+  let url = canvas.toDataURL('image/png');
+ 
+  //将图片构建到纹理中
+  let geometry10 = new THREE.PlaneGeometry(40, 100);
+  let texture = THREE.ImageUtils.loadTexture(url, null, function (t) {});
+ 
+  let material10 = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+    opacity: 1,
+    transparent: true
+  });
+ 
+  let rect = new THREE.Mesh(geometry10, material10);
+  rect.position.set(x, y, z+6);
+  scene.add(rect);
+  return rect;
+}
+    rect0=addIndexItem('指标体系0',0,450,100);
+   rect1= addIndexItem('指标体系1',0,300,100);
+   rect2= addIndexItem('指标体系2',50,300,200);
+   rect8=addIndexItem('指标体系8',-50,300,250);
+   rect3=  addIndexItem('指标体系3',-100,150,200);
+   rect4=  addIndexItem('指标体系4',100,150,50);
+   rect5=  addIndexItem('指标体系5',100,150,200);
+   rect6=  addIndexItem('指标体系6',-50,150,100);
+   rect7=  addIndexItem('指标体系7',0,150,250);
+
+function addLine(rect1,rect2){
+var materialline = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+var geometryline = new THREE.Geometry();
+geometryline.vertices.push(new THREE.Vector3( rect1.position.x, rect1.position.y-50, rect1.position.z) );
+geometryline.vertices.push(new THREE.Vector3( rect2.position.x, rect2.position.y+50, rect2.position.z) );
+var line = new THREE.Line( geometryline, materialline );
+scene.add( line );
+}
+
+addLine(rect0,rect8);
+addLine(rect0,rect1);
+addLine(rect0,rect2);
+addLine(rect1,rect4);
+addLine(rect8,rect3);
+addLine(rect1,rect6);
+addLine(rect2,rect5);
+addLine(rect2,rect7);
+
+
+
+    /**
+     * 光源设置
+     */
+    //点光源
+    var point = new THREE.PointLight(0xffffff);
+    point.position.set(400, 200, 300); //点光源位置
+    scene.add(point); //点光源添加到场景中
+    //环境光
+    var ambient = new THREE.AmbientLight(0x444444);
+    scene.add(ambient);
+    // console.log(scene)
+    // console.log(scene.children)
+    /**
+     * 相机设置
+     */
+    var width = window.innerWidth; //窗口宽度
+    var height = window.innerHeight; //窗口高度
+    var k = width / height; //窗口宽高比
+    var s = 400; //三维场景显示范围控制系数，系数越大，显示的范围越大
+    //创建相机对象
+    var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+    camera.position.set(200, 300, 1000); //设置相机位置
+    camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
+    /**
+     * 创建渲染器对象
+     */
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);//设置渲染区域尺寸
+    renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
+    document.body.appendChild(renderer.domElement); //body元素中插入canvas对象
+    //执行渲染操作   指定场景、相机作为参数
+    // 渲染函数
+        function render() {
+  renderer.render(scene,camera);//执行渲染操作
+}
+  render();
+  var controls = new THREE.OrbitControls(camera,renderer.domElement);//创建控件对象
+controls.addEventListener('change', render);//监听鼠标、键盘事件
+  </script>
+</body>
+</html>
